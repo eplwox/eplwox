@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>eplwox</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        background: #008080;
+        font-family: Tahoma, Verdana, sans-serif;
+        overflow-x: hidden;
+      }
+
+      .desktop {
+        padding: 20px;
+      }
+
+      .window {
+        width: 750px;
+        margin: 25px auto;
+
+        background: #c0c0c0;
+
+        border-top: 2px solid white;
+        border-left: 2px solid white;
+
+        border-right: 2px solid #404040;
+        border-bottom: 2px solid #404040;
+
+        box-shadow: 4px 4px 0px black;
+      }
+
+      .title-bar {
+        background: linear-gradient(to right, #000080, #1084d0);
+
+        color: white;
+
+        padding: 4px 8px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        font-weight: bold;
+      }
+
+      .window-buttons {
+        display: flex;
+        gap: 4px;
+      }
+
+      .win-btn {
+        width: 18px;
+        height: 18px;
+
+        background: #c0c0c0;
+
+        color: black;
+
+        border-top: 1px solid white;
+        border-left: 1px solid white;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 12px;
+      }
+
+      .window-content {
+        padding: 18px;
+        color: black;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin-top: 0;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      .slider {
+        width: 100%;
+      }
+
+      .info-box {
+        margin-top: 15px;
+
+        background: white;
+
+        border: 2px inset gray;
+
+        padding: 10px;
+      }
+
+      .taskbar {
+        position: fixed;
+
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        background: #c0c0c0;
+
+        border-top: 2px solid white;
+
+        height: 40px;
+
+        display: flex;
+        align-items: center;
+
+        padding: 0 8px;
+      }
+
+      .start {
+        border-top: 2px solid white;
+        border-left: 2px solid white;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+
+        background: #c0c0c0;
+
+        padding: 4px 12px;
+
+        font-weight: bold;
+      }
+
+      canvas {
+        background: white;
+        margin-top: 20px;
+        border: 2px inset gray;
+      }
+
+      .note {
+        background: white;
+        border: 2px inset gray;
+        padding: 10px;
+      }
+
+      .desktop-icons {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        color: white;
+        font-size: 14px;
+      }
+
+      .icon {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      @media (max-width: 850px) {
+        .window {
+          width: 95%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="desktop-icons">
+      <div class="icon">
+        🖥️<br />
+        MarketSimulator.exe
+      </div>
+
+      <div class="icon">
+        📄<br />
+        About.txt
+      </div>
+
+      <div class="icon">
+        📁<br />
+        Projects
+      </div>
+    </div>
+
+    <div class="desktop">
+      <div class="window">
+        <div class="title-bar">
+          <span>About.exe</span>
+
+          <div class="window-buttons">
+            <div class="win-btn">_</div>
+            <div class="win-btn">□</div>
+            <div class="win-btn">X</div>
+          </div>
+        </div>
+
+        <div class="window-content">
+          <h2>eplwox</h2>
+
+          <p>
+            Interested in economics, programming, simulation, and interactive
+            educational tools.
+          </p>
+
+          <p>
+            Current interests include market dynamics, economic modelling, data
+            visualisation, and software development.
+          </p>
+
+          <p>This site contains experiments, notes, and interactive models.</p>
+        </div>
+      </div>
+
+      <div class="window">
+        <div class="title-bar">
+          <span>MarketSimulator.exe</span>
+
+          <div class="window-buttons">
+            <div class="win-btn">_</div>
+            <div class="win-btn">□</div>
+            <div class="win-btn">X</div>
+          </div>
+        </div>
+
+        <div class="window-content">
+          <h2>Supply & Demand</h2>
+
+          <label>
+            Demand Intercept:
+            <input
+              class="slider"
+              id="demand"
+              type="range"
+              min="50"
+              max="150"
+              value="100"
+            />
+          </label>
+
+          <br />
+
+          <label>
+            Tax Rate:
+            <input
+              class="slider"
+              id="tax"
+              type="range"
+              min="0"
+              max="40"
+              value="0"
+            />
+          </label>
+
+          <canvas id="chart"></canvas>
+
+          <div class="info-box" id="equilibrium"></div>
+        </div>
+      </div>
+
+      <div class="window">
+        <div class="title-bar">
+          <span>Projects.exe</span>
+
+          <div class="window-buttons">
+            <div class="win-btn">_</div>
+            <div class="win-btn">□</div>
+            <div class="win-btn">X</div>
+          </div>
+        </div>
+
+        <div class="window-content">
+          <ul>
+            <li>Supply & Demand Simulator</li>
+            <li>Tax Incidence Explorer</li>
+            <li>IS-LM Model (planned)</li>
+            <li>Solow Growth Simulator (planned)</li>
+            <li>Phillips Curve Visualiser (planned)</li>
+            <li>Agent-Based Market Models (planned)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="window">
+        <div class="title-bar">
+          <span>Notes.txt</span>
+
+          <div class="window-buttons">
+            <div class="win-btn">_</div>
+            <div class="win-btn">□</div>
+            <div class="win-btn">X</div>
+          </div>
+        </div>
+
+        <div class="window-content">
+          <div class="note">
+            <p>Topics currently being explored:</p>
+
+            <ul>
+              <li>Elasticity</li>
+              <li>Market efficiency</li>
+              <li>Growth theory</li>
+              <li>Game theory</li>
+              <li>Data structures</li>
+              <li>Web development</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="taskbar">
+      <div class="start">Start</div>
+    </div>
+
+    <script>
+      const ctx = document.getElementById("chart");
+
+      const demandSlider = document.getElementById("demand");
+
+      const taxSlider = document.getElementById("tax");
+
+      const equilibriumBox = document.getElementById("equilibrium");
+
+      const chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Demand",
+              data: [],
+              borderWidth: 3,
+            },
+            {
+              label: "Supply",
+              data: [],
+              borderWidth: 3,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+        },
+      });
+
+      function updateModel() {
+        const demandIntercept = Number(demandSlider.value);
+
+        const tax = Number(taxSlider.value);
+
+        let prices = [];
+        let demand = [];
+        let supply = [];
+
+        let eqPrice = null;
+        let eqQuantity = null;
+
+        for (let p = 0; p <= 100; p++) {
+          const qd = demandIntercept - p;
+
+          const qs = p - 10 - tax;
+
+          prices.push(p);
+          demand.push(qd);
+          supply.push(qs);
+
+          if (eqPrice === null && Math.abs(qd - qs) < 2) {
+            eqPrice = p;
+            eqQuantity = qd;
+          }
+        }
+
+        chart.data.labels = prices;
+
+        chart.data.datasets[0].data = demand;
+
+        chart.data.datasets[1].data = supply;
+
+        chart.update();
+
+        equilibriumBox.innerHTML = `
+    <strong>Market Equilibrium</strong>
+    <br><br>
+
+    Price:
+    ${eqPrice}
+
+    <br>
+
+    Quantity:
+    ${eqQuantity?.toFixed(1)}
+    `;
+      }
+
+      demandSlider.addEventListener("input", updateModel);
+
+      taxSlider.addEventListener("input", updateModel);
+
+      updateModel();
+    </script>
+  </body>
+</html>
